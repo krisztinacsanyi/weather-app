@@ -1,0 +1,38 @@
+body {
+  background-color: #142534;
+  padding: 30px;
+}
+
+*:not(i) {
+  font-family: 'Open Sans', sans-serif !important;
+}
+
+.autocomplete label,
+.autocomplete svg {
+  color: #91b7cc;
+}
+
+.autocomplete input {
+  color: #91b7cc;
+  font-size: 18px !important;
+}
+
+.MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline,
+.MuiOutlinedInput-root:hover {
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid white;
+}
+
+.MuiAutocomplete-input {
+  z-index: 100;
+}
+
+.MuiLoadingButton-loadingIndicator {
+  color: rgba(255, 255, 255, 0.589) !important;
+}
+
+.MuiCircularProgress-root{
+  width: 40px !important;
+  height: 40px !important;
+}
