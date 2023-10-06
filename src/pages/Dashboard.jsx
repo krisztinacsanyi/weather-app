@@ -15,23 +15,11 @@ export default function Dashboard() {
   const currentCity = useSelector((state) => state.currentCity)
   const [weather, setWeather] = useState('')
   const [isLoading, setLoading] = useState(true)
-  const [time, setTime] = useState({ hour: '', minute: '' })
-  const [timeZoneOffset, setTimeZoneOffset] = useState(-1)
+ 
   // Clock mechanism
-  const interval = setInterval(() => {
-    if (timeZoneOffset !== -1) {
-      let current = currentDate(timeZoneOffset).toLocaleTimeString()
-      setTime({
-        hour: current.split(':')[0],
-        minute: current.split(':')[1],
-      })
-    }
-    if (time.hour !== '' && time.minute !== '') setLoading(false)
-    return () => clearInterval(interval)
-  }, 1000)
+  
   // Loading wheater data
   useEffect(() => {
-    setTimeZoneOffset(-1)
     if (currentCity !== '') {
       fetch(
         `https://api.openweathermap.org/data/2.5/weather?q=${currentCity}&units=metric&appid=${
@@ -40,7 +28,6 @@ export default function Dashboard() {
       )
         .then((response) => response.json())
         .then((data) => {
-          setTimeZoneOffset(data.timezone)
           setWeather({
             city: currentCity,
             temperature: Math.round(data.main.temp),
@@ -49,7 +36,9 @@ export default function Dashboard() {
             sunrise: currentTime(data.timezone, data.sys.sunrise),
             sunset: currentTime(data.timezone, data.sys.sunset),
             localDate: currentDate(data.timezone, data.dt),
+            timezone: data.timezone
           })
+          setLoading(false)
         })
     }
   }, [])
@@ -67,7 +56,7 @@ export default function Dashboard() {
             ) : (
               // Show desired data
               <Box textAlign={'center'}>
-                <Clock hour={time.hour} minute={time.minute} />
+                <Clock timezone={weather.timezone}/>
                 <CityName city={weather.city} />
                 <WeatherCondition
                   condition={weather.condition}
